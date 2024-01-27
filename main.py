@@ -73,6 +73,12 @@ def change_note():
 
 changeBtn.clicked.connect(change_note)
 
+def delete_note():
+    name = listNotes.selectedItems()[0].text()
+    notes.pop(name)
+    write_data()
+
+deleteBtn.clicked.connect(delete_note)
 
 def add_note():
     res, ok = QInputDialog.getText(window, "Введення", "Введіть назву замітки")
