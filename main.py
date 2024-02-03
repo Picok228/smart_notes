@@ -11,6 +11,7 @@ window.resize(900, 600)
 textEdit = QTextEdit()
 text1 = QLabel("Список заміток")
 listNotes = QListWidget()
+
 createBtn = QPushButton("Створити замітку")
 deleteBtn = QPushButton("Видалити замітку")
 changeBtn = QPushButton("Змінити замітку")
@@ -63,6 +64,8 @@ listNotes.addItems(notes)
 def vmist_note():
     name = listNotes.selectedItems()[0].text()
     textEdit.setText(notes[name]["вміст"])
+    listTag.clear()
+    listTag.addItems(notes[name]["теги"])
 
 listNotes.itemClicked.connect(vmist_note)
 
@@ -73,10 +76,36 @@ def change_note():
 
 changeBtn.clicked.connect(change_note)
 
-def delete_note():
+def add_tag():
     name = listNotes.selectedItems()[0].text()
-    notes.pop(name)
+    tag = lineEdit.text()
+    notes[name]["теги"].append(tag)
+    listTag.clear()
+    listTag.addItems(notes[name]["теги"])
     write_data()
+def delete_tag():
+    name_note = listNotes.selectedItems()[0].text()
+    name_tag = listTag.selectedItems()[0].text()
+    notes[name_note]["теги"].remove(name_tag)
+    listTag.clear()
+    listTag.addItems(notes[name_note]["теги"])
+    write_data()
+
+
+
+
+addBtn.clicked.connect(add_tag)
+vidkripBtn.clicked.connect(delete_tag)
+
+
+
+def delete_note():
+    res, ok = QInputDialog.getText(window,"Введеня","Введіть назву замітки")
+    if ok:
+        notes.pop(res)
+        listNotes.clear()
+        listNotes.addItems(notes)
+        write_data()
 
 deleteBtn.clicked.connect(delete_note)
 
@@ -94,6 +123,7 @@ def add_note():
 
 
 
+deleteBtn.clicked.connect(delete_note)
 
 createBtn.clicked.connect(add_note)
 window.show()
