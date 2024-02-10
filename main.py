@@ -120,7 +120,76 @@ def add_note():
         }
         write_data()
 
+def search_tag():
+    button_text = poshukBtn.text()
+    tag = lineEdit.text ()
+    if button_text == "Пошук за тегом":
+        apply_tag_search(tag)
+    if button_text == "Скинути пошук":
+        print("Функція для скидання пошуку")
 
+
+        text2.clear()
+        listNotes.clear()
+        listNotes.addItems(notes)
+        poshukBtn.setText("Пошук за тегом")
+
+
+def apply_tag_search(tag):
+    notes_filtered = {}
+    for note, value in notes.items():
+        if tag in value["теги"]:
+            notes_filtered[note] = value
+    poshukBtn.setText("Скинути пошук")
+    listTag.clear()
+    lineEdit.clear()
+    listTag.addItems(notes_filtered)
+
+poshukBtn.clicked.connect(search_tag)
+
+
+
+
+app.setStyleSheet("""
+    QWidget
+    {
+        background-color: #3a784e;
+        border-radius: 4px;
+    }
+
+
+    QPushButton
+    {
+        min-height: 25px;
+        border-style: double;
+        border-width: 2px;
+        border-color: bleck;
+        background-color: #d9d9d9;
+        font-size:16px;
+    }
+    QTextEdit
+    {
+        background-color: #d9d9d9;
+        border-radius: 4px;
+    }
+
+    QListWidget
+    {
+        background-color: #d9d9d9;
+        border-radius: 4px;
+    }
+
+    QLineEdit
+    {
+        background-color: #d9d9d9;
+        border-radius: 4px;
+        border-width: 7px;
+        min-height: 20px;
+    }
+
+
+
+""")
 
 
 deleteBtn.clicked.connect(delete_note)
